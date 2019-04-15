@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const recipeModel = require("../models/recipe/recipe.model.server");
 
 createRecipe = recipe =>
-    recipeModel.creaet(recipe);
+    recipeModel.create(recipe)
+        .catch(err => err.message);
 
 findAllRecipes = () =>
     recipeModel.find();

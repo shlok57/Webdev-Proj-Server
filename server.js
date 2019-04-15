@@ -21,6 +21,9 @@ app.use(function(req, res, next) {
     next();
 });
 
+require('./data/db')();
+require('./services/recipe.service.server')(app);
+
 
 
 //app.listen(process.env.PORT || 8080);
