@@ -1,0 +1,22 @@
+{
+  "name": "webdev-proj-server",
+  "version": "1.0.0",
+  "description": "WebDev-Sp19 project \u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[C\u001b[C\u001b[CCS5610 Wed-Dev-Sp19 project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shlok57/Webdev-Proj-Server.git"
+  },
+  "author": "Gaurav Gandhi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shlok57/Webdev-Proj-Server/issues"
+  },
+  "homepage": "https://github.com/shlok57/Webdev-Proj-Server#readme",
+  "dependencies": {
+    "mongoose": "^5.5.1"
+  }
+}
