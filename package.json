@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/shlok57/Webdev-Proj-Server#readme",
   "dependencies": {
+    "body-parse": "^0.1.0",
+    "express": "^4.16.4",
     "mongoose": "^5.5.1"
   }
 }
