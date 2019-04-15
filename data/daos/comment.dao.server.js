@@ -5,6 +5,10 @@ addComment = comment =>
     commentModel.create(comment)
         .catch(err => err.message);
 
+findAllComments = () =>
+    //TODO Populate user_id after model is added
+    commentModel.find().populate('Recipe_Id');
+
 findCommentsByUserId = userId =>
     commentModel.find({'User_Id': userId});
 
@@ -14,5 +18,6 @@ findCommentsByRecipeId = recipeId =>
 module.exports = {
     addComment,
     findCommentsByUserId,
-    findCommentsByRecipeId
+    findCommentsByRecipeId,
+    findAllComments
 };
