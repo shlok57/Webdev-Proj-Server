@@ -42,7 +42,7 @@ login = (req, res) => {
 			req.session["currentUser"] = user;
 			res.send(user);
 		} else {
-			res.send(0);
+			res.send(null);
 		}
 	});
 };
