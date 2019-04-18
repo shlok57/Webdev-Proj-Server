@@ -27,8 +27,8 @@ findAllRecipes = (req, res) => {
 
 findRecipeById = (req, res) => {
 
-    var id =req.params['id'];
-    recipeDao.findById(id)
+    var id = req.params['id'];
+    recipeDao.findRecipeById(id)
         .then(recipe => res.send(recipe));
 }
 
