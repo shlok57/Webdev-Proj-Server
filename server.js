@@ -23,6 +23,7 @@ app.use(function(req, res, next) {
 
 require('./data/db')();
 require('./services/recipe.service.server')(app);
+require('./services/comment.service.server')(app);
 
 
 
