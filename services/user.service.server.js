@@ -4,8 +4,8 @@ module.exports = app => {
 	app.post("/api/login", login);
 	app.post("/api/register", registerUser);
 	app.post("/api/logout", logout);
-	app.put("/api/updateUser/:uid", updateUser);
-	app.delete("/api/deleteUser/:uid", deleteUser);
+	app.put("/api/user/:uid", updateUser);
+	app.delete("/api/user/:uid", deleteUser);
 	app.get("/api/users", findAllUsers);
 	app.get("/api/user/:uid", findUserById);
 	app.get("/api/user", profile);
@@ -18,7 +18,8 @@ registerUser = (req, res) => {
 		_id: new Date().getTime(),
 		Username: username,
 		Password: password,
-		Date_Created: new Date()
+		Date_Created: new Date(),
+		Role: "FOODIE"
 	};
 	userDao
 		.findUserByUsername(username)
@@ -26,7 +27,7 @@ registerUser = (req, res) => {
 			if (!user) {
 				return userDao.createUser(newUser);
 			} else {
-				res.send("Username already exists");
+				res.send({ msg: "Username already exists" });
 			}
 		})
 		.then(user => {
@@ -53,7 +54,13 @@ logout = (req, res) => {
 };
 
 profile = (req, res) => {
-	res.send(req.session["currentUser"]);
+	var user = req.session["currentUser"];
+	if (user) {
+		var userId = user["_id"];
+		userDao.findUserById(userId).then(user => res.send(user));
+	} else {
+		res.send({ msg: "No Logged In User" });
+	}
 };
 
 findAllUsers = (req, res) => {
@@ -65,6 +72,15 @@ findUserById = (req, res) => {
 	userDao.findUserById(userId).then(user => res.send(user));
 };
 
-updateUser = (req, res) => {};
+updateUser = (req, res) => {
+	var userId = req.params["uid"];
+	var user = req.body;
+	userDao
+		.updateUser(userId, user)
+		.then(() => userDao.findUserById(userId).then(user => res.send(user)));
+};
 
-deleteUser = (req, res) => {};
+deleteUser = (req, res) => {
+	var userId = req.params["uid"];
+	userDao.deleteUser(userId).then(() => res.sendStatus(200));
+};
