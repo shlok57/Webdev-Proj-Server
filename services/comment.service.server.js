@@ -2,6 +2,7 @@ module.exports = app => {
 
     app.post('/api/user/:uid/recipe/:rid/comment', addComment);
     app.get('/api/comment', findAllComments);
+    app.get('/api/recipe/:id/comment', findCommentsByRecipeId);
 };
 
 var commentDao = require('../data/daos/comment.dao.server');
@@ -22,6 +23,13 @@ addComment = (req, res) => {
 findAllComments = (req, res) => {
     commentDao.findAllComments()
         .then(comments => res.send(comments));
+}
+
+findCommentsByRecipeId = (req, res) => {
+
+    var id = req.params['id'];
+    commentDao.findCommentsByRecipeId(id)
+        .then(recipes => res.send(recipes));
 }
 
 
