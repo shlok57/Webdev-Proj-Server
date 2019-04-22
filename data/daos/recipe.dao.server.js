@@ -16,9 +16,14 @@ findRecipeById = recipeId =>
 		.populate("users");
 
 updateRecipe = (recipeId, updatedRecipe) =>
-	recipeModel
-		.updateOne({ _id: recipeId }, { $set: updatedRecipe })
-		.then(() => recipeModel.findById(recipeId));
+    recipeModel.updateOne({_id: recipeId}, {$set: updatedRecipe})
+        .then(() => recipeModel.findById(recipeId));
+
+removeRecipe = recipdId =>
+    recipeModel.deleteOne({_id: recipdId});
+
+findRecipeIsLiked = (recipeId, userId) => 
+    recipeModel.find({recipeId: recipeId, userId: userId});
 
 removeRecipe = recipdId => recipeModel.deleteOne({ _id: recipdId });
 
@@ -28,4 +33,4 @@ module.exports = {
 	findRecipeById,
 	updateRecipe,
 	removeRecipe
-};
+}
