@@ -5,9 +5,7 @@ findAllUsers = () => userModel.find();
 
 findUserById = userId =>
     userModel.findById(userId)
-    .populate('comments')
-    .populate('recipes')
-    .populate('follows');
+    .populate('comments');
 
 createUser = user => userModel.create(user).catch(err => err.message);
 

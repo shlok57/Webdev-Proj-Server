@@ -22,10 +22,7 @@ updateRecipe = (recipeId, updatedRecipe) =>
 removeRecipe = recipdId =>
     recipeModel.deleteOne({_id: recipdId});
 
-findRecipeIsLiked = (recipeId, userId) => 
-    recipeModel.find({recipeId: recipeId, userId: userId});
-
-removeRecipe = recipdId => recipeModel.deleteOne({ _id: recipdId });
+removeRecipe = recipeId => recipeModel.deleteOne({ _id: recipeId });
 
 module.exports = {
 	createRecipe,
