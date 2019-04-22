@@ -14,12 +14,16 @@ module.exports = app => {
 registerUser = (req, res) => {
 	var username = req.body.Username;
 	var password = req.body.Password;
+	var role = req.body.Role;
+	var email = req.body.Email;
+
 	var newUser = {
 		_id: new Date().getTime(),
 		Username: username,
 		Password: password,
 		Date_Created: new Date(),
-		Role: "FOODIE"
+		Role: role,
+		Email: email
 	};
 	userDao
 		.findUserByUsername(username)

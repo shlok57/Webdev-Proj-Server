@@ -2,19 +2,36 @@ const mongoose = require("mongoose");
 const userSchema = mongoose.Schema(
 	{
 		_id: { type: Number, required: true },
-		Username: { type: String, required: true },
-		Date_Created: { type: Date, required: true },
-		Password: { type: String, required: true },
-		First_Name: { type: String, required: false },
-		Last_Name: { type: String, required: false },
-		Role: { type: String, required: false },
-		Phone: { type: String, required: false },
-		Email: { type: String, required: false },
-		Comments: {
-			type: mongoose.Schema.Types.Number,
-			ref: "CommentModel",
-			required: false
-		}
+		username: { type: String, required: true },
+		dateCreated: { type: Date, required: true },
+		password: { type: String, required: true },
+		firstName: { type: String, required: false },
+		lastName: { type: String, required: false },
+		role: { type: String, required: false },
+		phone: { type: String, required: false },
+		email: { type: String, required: false },
+		aboutMe: { type: String, required: false },
+		comments: [
+			{
+				type: mongoose.Schema.Types.Number,
+				ref: "CommentModel",
+				required: false
+			}
+		],
+		recipes: [
+			{
+				type: mongoose.Schema.Types.Number,
+				ref: "RecipeModel",
+				required: false
+			}
+		],
+		follows: [
+			{
+				type: mongoose.Schema.Types.Number,
+				ref: "UserModel",
+				required: false
+			}
+		]
 	},
 	{ collection: "users" }
 );
