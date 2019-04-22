@@ -54,6 +54,7 @@ logout = (req, res) => {
 };
 
 profile = (req, res) => {
+<<<<<<< HEAD
 	var user = req.session["currentUser"];
 	if (user) {
 		var userId = user["_id"];

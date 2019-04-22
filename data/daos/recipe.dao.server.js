@@ -8,7 +8,7 @@ createRecipe = recipe =>
 findAllRecipes = () =>
     recipeModel.find();
 
-findRecipeById = recipdId =>
+findRecipeById = recipeId =>
     recipeModel.findById(recipeId);
 
 updateRecipe = (recipeId, updatedRecipe) =>
