@@ -3,7 +3,11 @@ const userModel = require("../models/user/user.model.server");
 
 findAllUsers = () => userModel.find();
 
-findUserById = userId => userModel.findById(userId);
+findUserById = userId =>
+    userModel.findById(userId)
+    .populate('comments')
+    .populate('recipes')
+    .populate('follows');
 
 createUser = user => userModel.create(user).catch(err => err.message);
 
@@ -16,6 +20,7 @@ findUserByCredentials = (username, password) =>
 	userModel.findOne({ Username: username, Password: password });
 
 findUserByUsername = username => userModel.findOne({ Username: username });
+
 
 module.exports = {
 	findAllUsers,

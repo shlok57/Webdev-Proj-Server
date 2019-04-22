@@ -6,10 +6,10 @@ createRecipe = recipe =>
         .catch(err => err.message);
 
 findAllRecipes = () =>
-    recipeModel.find();
+    recipeModel.find().populate('moderatorId').populate('users');
 
 findRecipeById = recipeId =>
-    recipeModel.findById(recipeId);
+    recipeModel.findById(recipeId).populate('moderatorId').populate('users');
 
 updateRecipe = (recipeId, updatedRecipe) =>
     recipeModel.updateOne({_id: recipeId}, {$set: updatedRecipe})
