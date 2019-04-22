@@ -38,7 +38,7 @@ require("./services/recipe.service.server")(app);
 require("./services/comment.service.server")(app);
 require("./services/user.service.server")(app);
 
-//app.listen(process.env.PORT || 8080);
+app.listen(process.env.PORT || 8080);
 
-app.listen(3000);
+//app.listen(3000);
 
