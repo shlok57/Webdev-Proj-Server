@@ -53,7 +53,13 @@ logout = (req, res) => {
 };
 
 profile = (req, res) => {
-	res.send(req.session["currentUser"]);
+	if (req.session.hasOwnProperty("currentUser")){
+		res.send(req.session["currentUser"]);
+	}
+	else{
+		res.send("");
+	}
+
 };
 
 findAllUsers = (req, res) => {
