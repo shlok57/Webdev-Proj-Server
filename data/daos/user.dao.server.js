@@ -13,9 +13,9 @@ updateUser = (userId, user) =>
 	userModel.updateOne({ _id: userId }, user).catch(err => err.message);
 
 findUserByCredentials = (username, password) =>
-	userModel.findOne({ Username: username, Password: password });
+	userModel.findOne({ username: username, password: password });
 
-findUserByUsername = username => userModel.findOne({ Username: username });
+findUserByUsername = username => userModel.findOne({ username: username });
 
 module.exports = {
 	findAllUsers,

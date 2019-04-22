@@ -12,18 +12,18 @@ module.exports = app => {
 };
 
 registerUser = (req, res) => {
-	var username = req.body.Username;
-	var password = req.body.Password;
-	var role = req.body.Role;
-	var email = req.body.Email;
+	var username = req.body.username;
+	var password = req.body.password;
+	var role = req.body.role;
+	var email = req.body.email;
 
 	var newUser = {
 		_id: new Date().getTime(),
-		Username: username,
-		Password: password,
-		Date_Created: new Date(),
-		Role: role,
-		Email: email
+		username: username,
+		password: password,
+		dateCreated: new Date(),
+		role: role,
+		email: email
 	};
 	userDao
 		.findUserByUsername(username)
@@ -42,7 +42,7 @@ registerUser = (req, res) => {
 
 login = (req, res) => {
 	user = req.body;
-	userDao.findUserByCredentials(user.Username, user.Password).then(user => {
+	userDao.findUserByCredentials(user.username, user.password).then(user => {
 		if (user) {
 			req.session["currentUser"] = user;
 			res.send(user);
