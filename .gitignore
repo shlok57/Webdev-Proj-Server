@@ -81,4 +81,4 @@ node_modules
 #Visual Studi
 .vscode/
 
-.package-lock.json
+package-lock.json

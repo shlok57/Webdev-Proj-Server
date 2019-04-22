@@ -15,7 +15,7 @@ app.get("/hello", function(req, res) {
 });
 
 app.use(function(req, res, next) {
-	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Origin", "http://localhost:4200");
 	res.header(
 		"Access-Control-Allow-Headers",
 		"Origin, X-Requested-With, Content-Type, Accept"
@@ -38,7 +38,6 @@ require("./services/recipe.service.server")(app);
 require("./services/comment.service.server")(app);
 require("./services/user.service.server")(app);
 
-app.listen(process.env.PORT || 8080);
+app.listen(process.env.PORT || 3000);
 
-//app.listen(3000);
-
+// app.listen(3000);
