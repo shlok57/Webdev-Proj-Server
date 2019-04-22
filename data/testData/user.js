@@ -1,0 +1,35 @@
+users = [
+    {
+        _id: 123,
+        Username: 'admin',
+        Date_Created: '2019-04-22',
+        Password: 'admin',
+        First_Name: 'Admin',
+        Last_Name: 'Admin',
+        Role: 'ADMIN',
+        Phone: 4343,
+        Email: 'admin@recipe.com',
+    },
+    {
+        _id: 234,
+        Username: 'moderator',
+        Date_Created: '2019-04-22',
+        Password: 'moderator',
+        First_Name: 'Moderator',
+        Last_Name: 'Sur',
+        Role: 'MODERATOR',
+        Phone: 4343,
+        Email: 'moderator@recipe.com',
+    },
+    {
+        _id: 567,
+        Username: 'alice',
+        Date_Created: '2019-04-22',
+        Password: 'pass123',
+        First_Name: 'Alice',
+        Last_Name: 'Vander',
+        Role: 'USER',
+        Phone: 23,
+        Email: 'alice@recipe.com',
+    }
+]
