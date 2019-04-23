@@ -11,6 +11,7 @@ const recipeSchema = mongoose.Schema(
 		createdBy: String,
 		yummlyRating: Number,
 		yummlyId: String,
+		sourceRecipeUrl: String,
 		chef: {type: mongoose.Schema.Types.Number, ref: 'UserModel'}
 	},
 	{ collection: "recipes" }
