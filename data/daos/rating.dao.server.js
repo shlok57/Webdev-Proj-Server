@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const ratingMode = require("../models/rating/rating.model.server");
+const ratingModel = require("../models/rating/rating.model.server");
 
 rateRecipe = (rating) => {
     return ratingModel.create(rating);

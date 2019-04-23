@@ -74,6 +74,7 @@ module.exports = app => {
 		var user = req.body;
 		if(user._id == null)
 			user._id = new Date().getTime();
+			user.dateCreated = new Date();
 		userDao.findUserByUsername(user.username)
 			.then((users) => {
 			if (users.length === 0) {

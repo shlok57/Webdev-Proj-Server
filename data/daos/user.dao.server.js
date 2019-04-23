@@ -18,7 +18,7 @@ findUserById = (userId) => {
 }
 
 findUserByUsername = (username) => {
-	return userModel.findOne({username: username});
+	return userModel.find({username: username});
 }
 
 updateUser = (userId, newUser) => {

@@ -18,7 +18,7 @@ app.use(function(req, res, next) {
 	if(process.env.FRONT_END_URL)
 		res.header("Access-Control-Allow-Origin", process.env.FRONT_END_URL);
 	else
-		res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+		res.header("Access-Control-Allow-Origin", "http://localhost:4200");
 	res.header(
 		"Access-Control-Allow-Headers",
 		"Origin, X-Requested-With, Content-Type, Accept"
@@ -40,6 +40,9 @@ require("./data/db")();
 require("./services/recipe.service.server")(app);
 require("./services/comment.service.server")(app);
 require("./services/user.service.server")(app);
+require("./services/follow.service.server")(app);
+require("./services/like.service.server")(app);
+require("./services/rating.service.server")(app);
 
 app.listen(process.env.PORT || 8080);
 

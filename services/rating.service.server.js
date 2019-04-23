@@ -2,26 +2,26 @@ module.exports = (app) => {
 
 
 
-    var ratingModel = require('../data/daos/rating.dao.server');
+    var ratingDao = require('../data/daos/rating.dao.server');
 
     findRatedRecipesForCurrentUser = (req, res) => {
         var currentUser = req.session['currentUser'];
         var userId = currentUser._id;
-        ratingModel
+        ratingDao
             .findRatedRecipesForUser(userId)
             .then(recipes => res.json(recipes));
     }
 
     findRatedRecipesForUser = (req, res) => {
         var userId = req.params['userId'];
-        ratingModel
+        ratingDao
             .findRatedRecipesForUser(userId)
             .then(recipes => res.json(recipes));
     }
 
     findRatedUsersForRecipe = (req, res) => {
         var recipeId = req.params['recipeId'];
-        ratingModel
+        ratingDao
             .findRatedUsersForRecipe(recipeId)
             .then(users => res.json(users));
     }
@@ -40,7 +40,7 @@ module.exports = (app) => {
         if (ratingObject['review']) {
             rating['review'] = ratingObject['review'];
         }
-        ratingModel
+        ratingDao
             .rateRecipe(rating)
             .then(response => res.json(response));
     }
@@ -48,7 +48,7 @@ module.exports = (app) => {
     updateRating = (req, res) => {
         var ratingId = req.params['ratingId'];
         var ratingObject = req.body;
-        ratingModel
+        ratingDao
             .updateRating(ratingId, ratingObject)
             .then(status => res.send(status));
     }
