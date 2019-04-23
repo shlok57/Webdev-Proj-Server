@@ -2,18 +2,14 @@ module.exports = (app) => {
 
     var followDao = require('../data/daos/follow.dao.server');
 
-    app.post('/api/user/:userId/follow', followUser);
-    app.delete('/api/user/:userId/unfollow', unfollowUser);
-    app.get('/api/user/:userId/following', getFollowing);
-    app.get('/api/user/:userId/followers', getFollowers);
-    app.get('/api/user/following', getFollowingForCurrentUser);
-    app.get('/api/user/followers', getFollowersForCurrentUser);
+
 
     followUser = (req, res) => {
         var toUserId = req.params['userId'];
         var currentUser = req.session.currentUser;
         var fromUserId = currentUser._id;
         var follow = {
+            _id: new Date().getTime(),
             from: fromUserId,
             to: toUserId
         }
@@ -64,4 +60,11 @@ module.exports = (app) => {
             .getFollowers(userId)
             .then(followers => res.json(followers));
     }
+
+    app.post('/api/user/:userId/follow', followUser);
+    app.delete('/api/user/:userId/unfollow', unfollowUser);
+    app.get('/api/user/:userId/following', getFollowing);
+    app.get('/api/user/:userId/followers', getFollowers);
+    app.get('/api/user/following', getFollowingForCurrentUser);
+    app.get('/api/user/followers', getFollowersForCurrentUser);
 }

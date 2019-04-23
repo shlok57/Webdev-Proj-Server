@@ -2,11 +2,7 @@ module.exports = (app ) => {
 
     var likeDao = require('../data/daos/like.dao.server');
 
-    app.post('/api/recipe/:recipeId/like', likeRecipe);
-    app.delete('/api/recipe/:recipeId/unlike', unlikeRecipe)
-    app.get('/api/user/likedRecipe', findLikedRecipesForCurrentUser);
-    app.get('/api/user/:userId/likedRecipe', findLikedRecipesForUser);
-    app.get('/api/recipe/:recipeId/likedUser', findLikedUsersForRecipe);
+
 
     findLikedUsersForRecipe = (req, res) => {
         var recipeId = req.params['recipeId'];
@@ -35,9 +31,11 @@ module.exports = (app ) => {
         var currentUser = req.session.currentUser;
         var userId = currentUser._id;
         var like = {
+            _id: new Date().getTime(),
             user: userId,
             recipe: recipeId
         }
+
         likeDao
             .likeRecipe(like)
             .then(response => res.json(response));
@@ -55,4 +53,9 @@ module.exports = (app ) => {
             .unlikeRecipe(unlike)
             .then(response => res.json(response));
     }
+    app.post('/api/recipe/:recipeId/like', likeRecipe);
+    app.delete('/api/recipe/:recipeId/unlike', unlikeRecipe)
+    app.get('/api/user/likedRecipe', findLikedRecipesForCurrentUser);
+    app.get('/api/user/:userId/likedRecipe', findLikedRecipesForUser);
+    app.get('/api/recipe/:recipeId/likedUser', findLikedUsersForRecipe);
 }

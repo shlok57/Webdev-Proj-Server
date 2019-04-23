@@ -1,14 +1,5 @@
 module.exports = app => {
-	app.post('/api/user', createUser);
-	app.post('/api/admin/user', createUserByAdmin);
-	app.put('/api/admin/user/:userId', updateUserByAdmin);
-	app.get('/api/profile', profile);
-	app.get('/api/user', findAllUsers);
-	app.get('/api/profile/:username', getProfileOfUser);
-	app.post('/api/logout', logout);
-	app.post('/api/login', login);
-	app.put('/api/profile', updateProfile);
-	app.delete('/api/user/:userId', deleteUser);
+
 
 	var userDao = require('../data/daos/user.dao.server');
 	var likeDao = require('../data/daos/like.dao.server');
@@ -81,6 +72,8 @@ module.exports = app => {
 
 	createUser = (req, res) =>  {
 		var user = req.body;
+		if(user._id == null)
+			user._id = new Date().getTime();
 		userDao.findUserByUsername(user.username)
 			.then((users) => {
 			if (users.length === 0) {
@@ -115,4 +108,15 @@ module.exports = app => {
 	.then(() => userDao.deleteUser(userId))
 	.then(response => res.send(response));
 	}
+
+	app.post('/api/user', createUser);
+	app.post('/api/admin/user', createUserByAdmin);
+	app.put('/api/admin/user/:userId', updateUserByAdmin);
+	app.get('/api/profile', profile);
+	app.get('/api/user', findAllUsers);
+	app.get('/api/profile/:username', getProfileOfUser);
+	app.post('/api/logout', logout);
+	app.post('/api/login', login);
+	app.put('/api/profile', updateProfile);
+	app.delete('/api/user/:userId', deleteUser);
 }

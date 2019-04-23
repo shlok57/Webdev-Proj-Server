@@ -1,13 +1,5 @@
-module.exports = (app) => {
-    app.post('/api/recipe', createRecipe);
-    app.get('/api/recipe', findAllRecipes);
-    app.get('/api/user/createdRecipe', findAllCreatedRecipesForCurrentUser);
-    app.get('/api/user/:userId/createdRecipe', findAllCreatedRecipesForUser);
-    app.get('/api/recipe/search/:recipeSearchText', findRecipesBySearchQuery)
-    app.get('/api/recipe/yummly/:yummlyId', findRecipeByYummlyId);
-    app.get('/api/recipe/:recipeId', findRecipeById);
-    app.delete('/api/recipe/:recipeId', deleteRecipe);
-    app.put('/api/recipe/:recipeId', updateRecipe);
+module.exports = app => {
+
 
     var recipeDao = require('../data/daos/recipe.dao.server');
     var likeDao = require('../data/daos/like.dao.server');
@@ -15,6 +7,8 @@ module.exports = (app) => {
 
     createRecipe = (req, res) => {
         var recipe = req.body;
+        if(recipe._id == null)
+            recipe._id = new Date().getTime();
         recipeDao.createRecipe(recipe)
             .then(recipe => res.send(recipe));
     }
@@ -69,4 +63,14 @@ module.exports = (app) => {
         recipeDao.findRecipeById(recipeId)
             .then(recipe => res.send(recipe));
     }
+
+    app.post('/api/recipe', createRecipe);
+    app.get('/api/recipe', findAllRecipes);
+    app.get('/api/user/createdRecipe', findAllCreatedRecipesForCurrentUser);
+    app.get('/api/user/:userId/createdRecipe', findAllCreatedRecipesForUser);
+    app.get('/api/recipe/search/:recipeSearchText', findRecipesBySearchQuery)
+    app.get('/api/recipe/yummly/:yummlyId', findRecipeByYummlyId);
+    app.get('/api/recipe/:recipeId', findRecipeById);
+    app.delete('/api/recipe/:recipeId', deleteRecipe);
+    app.put('/api/recipe/:recipeId', updateRecipe);
 }

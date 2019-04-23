@@ -1,10 +1,6 @@
 module.exports = (app) => {
 
-    app.post('/api/recipe/:recipeId/rating', rateRecipe);
-    app.put('/api/rating/:ratingId', updateRating);
-    app.get('/api/user/ratedRecipe', findRatedRecipesForCurrentUser);
-    app.get('/api/user/:userId/ratedRecipe', findRatedRecipesForUser);
-    app.get('/api/recipe/:recipeId/ratedUser', findRatedUsersForRecipe);
+
 
     var ratingModel = require('../data/daos/rating.dao.server');
 
@@ -36,6 +32,7 @@ module.exports = (app) => {
         var userId = currentUser._id;
         var ratingObject = req.body;
         var rating = {
+            _id: new Date().getTime(),
             user: userId,
             recipe: recipeId,
             rating: ratingObject['rating']
@@ -55,4 +52,10 @@ module.exports = (app) => {
             .updateRating(ratingId, ratingObject)
             .then(status => res.send(status));
     }
+
+    app.post('/api/recipe/:recipeId/rating', rateRecipe);
+    app.put('/api/rating/:ratingId', updateRating);
+    app.get('/api/user/ratedRecipe', findRatedRecipesForCurrentUser);
+    app.get('/api/user/:userId/ratedRecipe', findRatedRecipesForUser);
+    app.get('/api/recipe/:recipeId/ratedUser', findRatedUsersForRecipe);
 }
