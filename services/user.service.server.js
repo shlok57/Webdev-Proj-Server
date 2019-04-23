@@ -10,10 +10,10 @@ module.exports = app => {
 	app.put('/api/profile', updateProfile);
 	app.delete('/api/user/:userId', deleteUser);
 
-	var userModel = require('../models/user/user.model.server');
-	var likeModel = require('../models/like/like.model.server');
-	var ratingModel = require('../models/rating/rating.model.server');
-	var followModel = require('../models/follow/follow.model.server');
+	var userDao = require('../data/daos/user.dao.server');
+	var likeDao = require('../data/daos/like.dao.server');
+	var ratingDao = require('../data/daos/rating.dao.server');
+	var followDao = require('../data/daos/follow.dao.server');
 
 	profile = (req, res) =>  {
 		var user = req.session["currentUser"];
@@ -27,7 +27,7 @@ module.exports = app => {
 
 	login = (req, res) =>  {
 		var credentials = req.body;
-		userModel
+		userDao
 			.findUserByCredentials(credentials)
 			.then(user => {
 				if(user !== null) {
@@ -41,7 +41,7 @@ module.exports = app => {
 
 	getProfileOfUser = (req, res) =>  {
 		var username = req.params['username'];
-		userModel
+		userDao
 			.findUserByUsername(username)
 			.then(users => res.json(users[0]));
 	}
@@ -56,7 +56,7 @@ module.exports = app => {
 		var userId = currentUser['_id'];
 		var newUser = req.body;
 
-		userModel
+		userDao
 			.updateUser(userId, newUser)
 			.then(status => {
 			req.session['currentUser'] = newUser;
@@ -67,7 +67,7 @@ module.exports = app => {
 	updateUserByAdmin = (req, res) =>  {
 		var userId = req.params['userId'];
 		var newUser = req.body;
-		userModel
+		userDao
 			.updateUser(userId, newUser)
 			.then(status => {
 			res.send(status)
@@ -75,16 +75,16 @@ module.exports = app => {
 	}
 
 	findAllUsers = (req, res) =>  {
-		userModel.findAllUsers()
+		userDao.findAllUsers()
 			.then(users => res.json(users));
 	}
 
 	createUser = (req, res) =>  {
 		var user = req.body;
-		userModel.findUserByUsername(user.username)
+		userDao.findUserByUsername(user.username)
 			.then((users) => {
 			if (users.length === 0) {
-			userModel.createUser(user)
+			userDao.createUser(user)
 				.then(user => {
 				req.session['currentUser'] = user;
 			res.send(user)
@@ -95,10 +95,10 @@ module.exports = app => {
 
 	createUserByAdmin = (req, res) =>  {
 		var user = req.body;
-		userModel.findUserByUsername(user.username)
+		userDao.findUserByUsername(user.username)
 			.then((users) => {
 			if (users.length === 0) {
-			userModel.createUser(user)
+			userDao.createUser(user)
 				.then(user => {
 				res.send(user)
 			});
@@ -108,11 +108,11 @@ module.exports = app => {
 
 	deleteUser = (req, res) =>  {
 		var userId = req.params['userId'];
-		likeModel.deleteLikesForUser(userId)
-			.then(() => ratingModel.deleteRatingsForUser(userId))
-	.then(() => followModel.deleteFollowingsForUser(userId))
-	.then(() => followModel.deleteFollowersForUser(userId))
-	.then(() => userModel.deleteUser(userId))
+		likeDao.deleteLikesForUser(userId)
+			.then(() => ratingDao.deleteRatingsForUser(userId))
+	.then(() => followDao.deleteFollowingsForUser(userId))
+	.then(() => followDao.deleteFollowersForUser(userId))
+	.then(() => userDao.deleteUser(userId))
 	.then(response => res.send(response));
 	}
 }

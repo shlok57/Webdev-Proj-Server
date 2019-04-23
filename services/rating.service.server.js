@@ -6,7 +6,7 @@ module.exports = (app) => {
     app.get('/api/user/:userId/ratedRecipe', findRatedRecipesForUser);
     app.get('/api/recipe/:recipeId/ratedUser', findRatedUsersForRecipe);
 
-    var ratingModel = require('../models/rating/rating.model.server');
+    var ratingModel = require('../data/daos/rating.dao.server');
 
     findRatedRecipesForCurrentUser = (req, res) => {
         var currentUser = req.session['currentUser'];
