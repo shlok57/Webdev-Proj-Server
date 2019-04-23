@@ -23,8 +23,8 @@ findUserByUsername = (username) => {
 
 updateUser = (userId, newUser) => {
 	return userModel.updateOne({
-		_id: userId
-	},newUser);
+		_id: userId,
+	},{$set: newUser});
 }
 
 deleteUser = (userId) => {

@@ -46,7 +46,7 @@ module.exports = app => {
 		var currentUser = req.session['currentUser'];
 		var userId = currentUser['_id'];
 		var newUser = req.body;
-
+		delete newUser._id;
 		userDao
 			.updateUser(userId, newUser)
 			.then(status => {
