@@ -72,11 +72,13 @@ module.exports = app => {
 
 	createUser = (req, res) =>  {
 		var user = req.body;
+		console.log(user);
+		user.dateCreated = new Date();
 		if(user._id == null)
 			user._id = new Date().getTime();
 		userDao.findUserByUsername(user.username)
 			.then((users) => {
-			if (users.length === 0) {
+				if (users == null) {
 			userDao.createUser(user)
 				.then(user => {
 				req.session['currentUser'] = user;
@@ -88,15 +90,27 @@ module.exports = app => {
 
 	createUserByAdmin = (req, res) =>  {
 		var user = req.body;
+
 		userDao.findUserByUsername(user.username)
 			.then((users) => {
-			if (users.length === 0) {
+			if (users == null) {
 			userDao.createUser(user)
 				.then(user => {
 				res.send(user)
 			});
 		} else res.send({})
 	});
+	}
+
+	findCurrentUser = (req,res) => {
+		var user = req.session["currentUser"];
+		if(user !== null) {
+			req.session['currentUser'] = user;
+			res.json(user);
+		} else {
+			res.json({});
+		}
+
 	}
 
 	deleteUser = (req, res) =>  {
@@ -113,7 +127,8 @@ module.exports = app => {
 	app.post('/api/admin/user', createUserByAdmin);
 	app.put('/api/admin/user/:userId', updateUserByAdmin);
 	app.get('/api/profile', profile);
-	app.get('/api/user', findAllUsers);
+	app.get('/api/users', findAllUsers);
+	app.get('/api/sessionUser', findCurrentUser);
 	app.get('/api/profile/:username', getProfileOfUser);
 	app.post('/api/logout', logout);
 	app.post('/api/login', login);

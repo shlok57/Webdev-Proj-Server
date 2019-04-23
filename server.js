@@ -16,7 +16,7 @@ app.get("/hello", function(req, res) {
 
 app.use(function(req, res, next) {
 	if(process.env.FRONT_END_URL)
-		res.header("Access-Control-Allow-Origin", process.env.FRONT_END_URL);
+		res.header("Access-Control-Allow-Origin", "http://localhost:3000");
 	else
 		res.header("Access-Control-Allow-Origin", "http://localhost:3000");
 	res.header(
