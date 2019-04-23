@@ -10,28 +10,7 @@ const userSchema = mongoose.Schema(
 		role: { type: String, required: false },
 		phone: { type: String, required: false },
 		email: { type: String, required: false },
-		aboutMe: { type: String, required: false },
-		comments: [
-			{
-				type: mongoose.Schema.Types.Number,
-				ref: "CommentModel",
-				required: false
-			}
-		],
-		recipes: [
-			{
-				type: mongoose.Schema.Types.Number,
-				ref: "RecipeModel",
-				required: false
-			}
-		],
-		follows: [
-			{
-				type: mongoose.Schema.Types.Number,
-				ref: "UserModel",
-				required: false
-			}
-		]
+		aboutMe: { type: String, required: false }
 	},
 	{ collection: "users" }
 );

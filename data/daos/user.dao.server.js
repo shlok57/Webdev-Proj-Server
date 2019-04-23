@@ -1,31 +1,43 @@
-const mongoose = require("mongoose");
-const userModel = require("../models/user/user.model.server");
+var mongoose = require('mongoose');
+var userModel = require('../models/user/user.model.server')
 
-findAllUsers = () => userModel.find();
+createUser = (user) => {
+	return userModel.create(user);
+};
 
-findUserById = userId =>
-    userModel.findById(userId)
-    .populate('comments');
+findUserByCredentials = (credentials) => {
+	return userModel.findOne(credentials, {password: 0});
+}
 
-createUser = user => userModel.create(user).catch(err => err.message);
+findAllUsers = () => {
+	return userModel.find();
+}
 
-deleteUser = userId => userModel.remove(userId);
+findUserById = (userId) => {
+	return userModel.findOne({_id: userId});
+}
 
-updateUser = (userId, user) =>
-	userModel.updateOne({ _id: userId }, user).catch(err => err.message);
+findUserByUsername = (username) => {
+	return userModel.findOne({username: username});
+}
 
-findUserByCredentials = (username, password) =>
-	userModel.findOne({ username: username, password: password });
+updateUser = (userId, newUser) => {
+	return userModel.updateOne({
+		_id: userId
+	},newUser);
+}
 
-findUserByUsername = username => userModel.findOne({ username: username });
-
+deleteUser = (userId) => {
+	return userModel.deleteOne({_id: userId});
+}
 
 module.exports = {
-	findAllUsers,
-	findUserById,
 	createUser,
-	deleteUser,
+	findUserByCredentials,
 	updateUser,
 	findUserByUsername,
-	findUserByCredentials
+	deleteUser,
+	findUserById,
+	findAllUsers
 };
+

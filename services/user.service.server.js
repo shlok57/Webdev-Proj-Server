@@ -1,90 +1,118 @@
-var userDao = require("../data/daos/user.dao.server");
-
 module.exports = app => {
-	app.post("/api/login", login);
-	app.post("/api/register", registerUser);
-	app.post("/api/logout", logout);
-	app.put("/api/user/:uid", updateUser);
-	app.delete("/api/user/:uid", deleteUser);
-	app.get("/api/users", findAllUsers);
-	app.get("/api/user/:uid", findUserById);
-	app.get("/api/user", profile);
-};
+	app.post('/api/user', createUser);
+	app.post('/api/admin/user', createUserByAdmin);
+	app.put('/api/admin/user/:userId', updateUserByAdmin);
+	app.get('/api/profile', profile);
+	app.get('/api/user', findAllUsers);
+	app.get('/api/profile/:username', getProfileOfUser);
+	app.post('/api/logout', logout);
+	app.post('/api/login', login);
+	app.put('/api/profile', updateProfile);
+	app.delete('/api/user/:userId', deleteUser);
 
-registerUser = (req, res) => {
-	var username = req.body.username;
-	var password = req.body.password;
-	var role = req.body.role;
-	var email = req.body.email;
+	var userModel = require('../models/user/user.model.server');
+	var likeModel = require('../models/like/like.model.server');
+	var ratingModel = require('../models/rating/rating.model.server');
+	var followModel = require('../models/follow/follow.model.server');
 
-	var newUser = {
-		_id: new Date().getTime(),
-		username: username,
-		password: password,
-		dateCreated: new Date(),
-		role: role,
-		email: email
-	};
-	userDao
-		.findUserByUsername(username)
-		.then(user => {
-			if (!user) {
-				return userDao.createUser(newUser);
+	profile = (req, res) =>  {
+		var user = req.session["currentUser"];
+		if (user) {
+			var userId = user["_id"];
+			userDao.findUserById(userId).then(user => res.send(user));
+		} else {
+			res.send({ msg: "No Logged In User" });
+		}
+	}
+
+	login = (req, res) =>  {
+		var credentials = req.body;
+		userModel
+			.findUserByCredentials(credentials)
+			.then(user => {
+				if(user !== null) {
+				req.session['currentUser'] = user;
+				res.json(user);
 			} else {
-				res.send({ msg: "Username already exists" });
+				res.json({});
 			}
 		})
-		.then(user => {
-			req.session["currentUser"] = user;
-			res.send(user);
-		});
-};
-
-login = (req, res) => {
-	user = req.body;
-	userDao.findUserByCredentials(user.username, user.password).then(user => {
-		if (user) {
-			req.session["currentUser"] = user;
-			res.send(user);
-		} else {
-			res.send(null);
-		}
-	});
-};
-
-logout = (req, res) => {
-	req.session.destroy();
-	res.send(200);
-};
-
-profile = (req, res) => {
-	var user = req.session["currentUser"];
-	if (user) {
-		var userId = user["_id"];
-		userDao.findUserById(userId).then(user => res.send(user));
-	} else {
-		res.send({ msg: "No Logged In User" });
 	}
-};
 
-findAllUsers = (req, res) => {
-	userDao.findAllUsers().then(users => res.send(users));
-};
+	getProfileOfUser = (req, res) =>  {
+		var username = req.params['username'];
+		userModel
+			.findUserByUsername(username)
+			.then(users => res.json(users[0]));
+	}
 
-findUserById = (req, res) => {
-	var userId = req.params["uid"];
-	userDao.findUserById(userId).then(user => res.send(user));
-};
+	logout = (req, res) =>  {
+		req.session.destroy();
+		res.sendStatus(200);
+	}
 
-updateUser = (req, res) => {
-	var userId = req.params["uid"];
-	var user = req.body;
-	userDao
-		.updateUser(userId, user)
-		.then(() => userDao.findUserById(userId).then(user => res.send(user)));
-};
+	updateProfile = (req, res) =>  {
+		var currentUser = req.session['currentUser'];
+		var userId = currentUser['_id'];
+		var newUser = req.body;
 
-deleteUser = (req, res) => {
-	var userId = req.params["uid"];
-	userDao.deleteUser(userId).then(() => res.sendStatus(200));
-};
+		userModel
+			.updateUser(userId, newUser)
+			.then(status => {
+			req.session['currentUser'] = newUser;
+		res.send(status)
+	});
+	}
+
+	updateUserByAdmin = (req, res) =>  {
+		var userId = req.params['userId'];
+		var newUser = req.body;
+		userModel
+			.updateUser(userId, newUser)
+			.then(status => {
+			res.send(status)
+		});
+	}
+
+	findAllUsers = (req, res) =>  {
+		userModel.findAllUsers()
+			.then(users => res.json(users));
+	}
+
+	createUser = (req, res) =>  {
+		var user = req.body;
+		userModel.findUserByUsername(user.username)
+			.then((users) => {
+			if (users.length === 0) {
+			userModel.createUser(user)
+				.then(user => {
+				req.session['currentUser'] = user;
+			res.send(user)
+		});
+		} else res.send({})
+	});
+	}
+
+	createUserByAdmin = (req, res) =>  {
+		var user = req.body;
+		userModel.findUserByUsername(user.username)
+			.then((users) => {
+			if (users.length === 0) {
+			userModel.createUser(user)
+				.then(user => {
+				res.send(user)
+			});
+		} else res.send({})
+	});
+	}
+
+	deleteUser = (req, res) =>  {
+		var userId = req.params['userId'];
+		likeModel.deleteLikesForUser(userId)
+			.then(() => ratingModel.deleteRatingsForUser(userId))
+	.then(() => followModel.deleteFollowingsForUser(userId))
+	.then(() => followModel.deleteFollowersForUser(userId))
+	.then(() => userModel.deleteUser(userId))
+	.then(response => res.send(response));
+	}
+}

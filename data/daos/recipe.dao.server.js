@@ -1,33 +1,63 @@
 const mongoose = require("mongoose");
 const recipeModel = require("../models/recipe/recipe.model.server");
 
-createRecipe = recipe => recipeModel.create(recipe).catch(err => err.message);
+createRecipe = (recipe) => {
+	return recipeModel.create(recipe);
+}
 
-findAllRecipes = () =>
-	recipeModel
-		.find()
-		.populate("moderatorId")
-		.populate("users");
+findAllRecipes = () => {
+	return recipeModel.find();
+}
 
-findRecipeById = recipeId =>
-	recipeModel
-		.findById(recipeId)
-		.populate("moderatorId")
-		.populate("users");
+findAllCreatedRecipesForUser = (userId) => {
+	return recipeModel.find({
+		chef: userId
+	});
+}
 
-updateRecipe = (recipeId, updatedRecipe) =>
-    recipeModel.updateOne({_id: recipeId}, {$set: updatedRecipe})
-        .then(() => recipeModel.findById(recipeId));
+findRecipeByYummlyId = (yummlyId) => {
+	return recipeModel.findOne({yummlyId: yummlyId});
+}
 
-removeRecipe = recipdId =>
-    recipeModel.deleteOne({_id: recipdId});
+findRecipeById = (recipeId) => {
+	return recipeModel.findOne({_id: recipeId});
+}
 
-removeRecipe = recipeId => recipeModel.deleteOne({ _id: recipeId });
+findRecipesBySearchQuery = (recipeSearchText) => {
+	return recipeModel.find({
+		$text: {$search: recipeSearchText},
+		createdBy: 'Chef'
+	})
+}
+
+findAllRecipesForChef = (userId) => {
+	return recipeModel.find({chef: userId});
+}
+
+deleteRecipesForChef = (userId) => {
+	return recipeModel.remove({chef: userId});
+}
+
+deleteRecipe = (recipeId) => {
+	return recipeModel.deleteOne({_id: recipeId});
+}
+
+updateRecipe = (recipeId, newRecipe) => {
+	return recipeModel.update({
+		_id: recipeId
+	},newRecipe
+	);
+}
 
 module.exports = {
 	createRecipe,
 	findAllRecipes,
+	findRecipeByYummlyId,
+	findRecipesBySearchQuery,
+	findAllCreatedRecipesForUser,
 	findRecipeById,
+	deleteRecipe,
 	updateRecipe,
-	removeRecipe
+	findAllRecipesForChef,
+	deleteRecipesForChef
 }
