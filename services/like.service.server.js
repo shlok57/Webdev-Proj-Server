@@ -1,7 +1,7 @@
 module.exports = (app ) => {
 
     var likeDao = require('../data/daos/like.dao.server');
-
+    var recipeDao  = require('../data/daos/recipe.dao.server');
 
 
     findLikedUsersForRecipe = (req, res) => {
@@ -54,9 +54,16 @@ module.exports = (app ) => {
             .then(response => res.json(response));
     }
 
+
+
     getTotalLikesByRecipes = (req, res) => {
 
-        likeDao.getTotalLikesByRecipes().then(response => res.json(response));
+       var likesByRecipeId =  likeDao.getTotalLikesByRecipes().then(response => res.json(response));
+       var promiseArr = [];
+       for(var likesByRep in Object.values(likesByRecipeId)) {
+           promiseArr.push(recipeDao.findRecipeById(likesByRep._id)
+               .then(recipe => likesByRep.recipe = recipe));
+       }
     }
 
 
