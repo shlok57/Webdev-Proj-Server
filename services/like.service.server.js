@@ -53,9 +53,17 @@ module.exports = (app ) => {
             .unlikeRecipe(unlike)
             .then(response => res.json(response));
     }
+
+    getTotalLikesByRecipes = (req, res) => {
+
+        likeDao.getTotalLikesByRecipes().then(response => res.json(response));
+    }
+
+
     app.post('/api/recipe/:recipeId/like', likeRecipe);
     app.delete('/api/recipe/:recipeId/unlike', unlikeRecipe)
     app.get('/api/user/likedRecipe', findLikedRecipesForCurrentUser);
     app.get('/api/user/:userId/likedRecipe', findLikedRecipesForUser);
     app.get('/api/recipe/:recipeId/likedUser', findLikedUsersForRecipe);
+    app.get('/api/topLike', getTotalLikesByRecipes);
 }

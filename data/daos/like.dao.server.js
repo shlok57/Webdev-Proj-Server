@@ -27,9 +27,21 @@ findLikedRecipesForUser = (userId) => {
 findLikedUsersForRecipe = (recipeId) => {
     return likeModel
         .find({recipe: recipeId})
-        .populate('user')
-        .exec();
+        .populate('user');
 }
+
+getTotalLikesByRecipes = () => {
+    return likeModel.aggregate([
+        {
+            $group: {
+                _id: '$recipe',
+                count: {$sum: 1}
+            }
+        }
+    ]).sort({count: -1});
+}
+
+
 
 module.exports = {
     likeRecipe,
@@ -37,5 +49,6 @@ module.exports = {
     findLikedUsersForRecipe,
     unlikeRecipe,
     deleteLikesForRecipe,
-    deleteLikesForUser
+    deleteLikesForUser,
+    getTotalLikesByRecipes
 };
