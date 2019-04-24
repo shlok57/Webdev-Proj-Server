@@ -24,9 +24,10 @@ findRecipeById = (recipeId) => {
 }
 
 findRecipesBySearchQuery = (recipeSearchText) => {
+	console.log(recipeSearchText);
 	return recipeModel.find({
 		$text: {$search: recipeSearchText},
-		createdBy: 'Chef'
+		createdBy: 'CHEF'
 	})
 }
 
