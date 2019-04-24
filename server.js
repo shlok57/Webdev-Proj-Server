@@ -18,7 +18,7 @@ app.use(function(req, res, next) {
 	if(process.env.FRONT_END_URL)
 		res.header("Access-Control-Allow-Origin", process.env.FRONT_END_URL);
 	else
-		res.header("Access-Control-Allow-Origin", "http://localhost:4200");
+		res.header("Access-Control-Allow-Origin", "http://localhost:8080");
 	res.header(
 		"Access-Control-Allow-Headers",
 		"Origin, X-Requested-With, Content-Type, Accept"
